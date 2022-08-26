@@ -1,12 +1,11 @@
 import os
 
-class FileSystemOps:
+class FileSystem:
 
     def __init__(self, directory_path="data") -> None:
 
         self.data_directory = directory_path
         # self.directory_index = dict()
-
         # check for data directory
         if os.path.exists(directory_path) == False:
             os.makedirs(directory_path)
@@ -15,7 +14,7 @@ class FileSystemOps:
         try:    
             return os.listdir(self.data_directory)
         except Exception as e:
-            print(f"FileSystemOps :: list_files :: {e}")
+            print(f"FileSystemOps :: list_files :: {e}")    
             return []
 
     def create_file(self, file_name: str, data: any) -> bool:
@@ -41,7 +40,6 @@ class FileSystemOps:
         except Exception as e:
             print(f"FileSystemOps :: delete_file :: {file_name} :: {e}")
             return False
-
 
     def update_file(self, file_name, data: bytes | str | None) -> bool | None:
         try:

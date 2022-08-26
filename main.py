@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, make_response
-from filesystem_ops import FileSystemOps
+from filesystem_module import FileSystem
 
-fs_ops = FileSystemOps(directory_path="data")
+fs_ops = FileSystem(directory_path="data")
 
 app=Flask(__name__)
 
@@ -17,7 +17,7 @@ def create(file_name):
         return jsonify({"result": "failed"}), 500
 
 @app.route("/delete/<string:file_name>",methods=["DELETE"])
-def delete(file_name):
+def delete(file_name): 
     try:
         if fs_ops.delete_file(file_name=file_name):
             return jsonify({"result": "success"}), 201
@@ -49,8 +49,6 @@ def get(file_name):
         if data != None:
             response = make_response(data)
             response.headers["Content-Type"] = "application/octet-stream"
-            # mime_type = magic.from_buffer(data, mime=True)
-            # response.headers["Content-Type"] = mime_type
             return response, 200
         else:
             return jsonify({"result": "file not found"}), 404
@@ -65,7 +63,6 @@ def list():
     except Exception as e:
         print(f"list :: error occured :: {e}")
         return jsonify({"result": []}), 500
-
 
 if __name__=="__main__":
     app.run(host="0.0.0.0",port=9000,debug=True)
